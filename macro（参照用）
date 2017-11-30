@@ -1,0 +1,32 @@
+Sub aggregateBitFlyer()
+    torihikisu = 0
+    goukei = 0
+    
+    Do While ActiveCell.Cells(1, -1).Value <> ""
+        '取引済数量 、 平均価格 をプラマイする
+        t = ActiveCell.Cells(1, -5).Value * 100 '取引済数量
+        g = ActiveCell.Cells(1, -3).Value * 100  ' 平均価格
+        
+        If ActiveCell.Cells(1, -7).Value = "買い" Then
+            torihikisu = torihikisu + t
+            goukei = goukei + (g * t / 100)
+        Else
+            torihikisu = torihikisu - t
+            goukei = goukei - (g * t / 100)
+        End If
+        
+       ' 収益を表示する
+        If torihikisu = 0 Then
+            If ActiveCell.Cells(1, -7).Value = "買い" Then
+                ActiveCell.Cells(1, 1).Value = goukei / 100
+            Else
+                ActiveCell.Cells(1, 1).Value = goukei / 100 * -1
+            End If
+            goukei = 0
+        End If
+        
+        ' １つ下のセルをアクティブにする
+        ActiveCell.Offset(1, 0).Activate
+    Loop
+End Sub
+
